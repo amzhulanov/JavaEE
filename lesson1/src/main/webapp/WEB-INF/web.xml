@@ -10,6 +10,15 @@
 
 
 
+    <servlet>
+        <servlet-name>Error403Handler</servlet-name>
+        <servlet-class>ru.geekbrains.servlets.Error403Handler</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Error404Handler</servlet-name>
+        <servlet-class>ru.geekbrains.servlets.Error404Handler</servlet-class>
+    </servlet>
+
     <!--
      <url-pattern></url-pattern> - маппинг на контекст приложения http://localhost:8080/simple-webapp
      <url-pattern>/</url-pattern> - прекрывает сервлет по умолчанию (не желательно)
@@ -21,6 +30,24 @@
     -->
 
 
+    <servlet-mapping>
+        <servlet-name>Error403Handler</servlet-name>
+        <url-pattern>/error403</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Error404Handler</servlet-name>
+        <url-pattern>/error404</url-pattern>
+    </servlet-mapping>
+
+
+    <error-page>
+        <error-code>403</error-code>
+        <location>/error403</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error404</location>
+    </error-page>
 
 
 </web-app>

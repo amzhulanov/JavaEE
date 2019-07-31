@@ -1,4 +1,4 @@
-package ru.geekbrains.servlets.homework;
+package ru.geekbrains.servlets;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,12 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "MainServlet", urlPatterns = {"/main"})
+@WebServlet(name = "MainServlet", urlPatterns = "/mainpage")
 public class MainServlet extends HttpServlet {
     @Override
-    protected void doGet (HttpServletRequest request, HttpServletResponse
-            response)
-            throws ServletException, IOException {
+    protected void doGet (HttpServletRequest request, HttpServletResponse           response)            throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -21,16 +19,18 @@ public class MainServlet extends HttpServlet {
     protected void processRequest (HttpServletRequest request,
                                    HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType( "text/html;charset=UTF-8" );
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println( "<!DOCTYPE html>" );
             out.println( "<html>" );
             out.println( "<head>" );
-            out.println( "<title>Servlet Hello</title>" );
+            out.println( "<title>" + request.getServletPath()+"</title>");
             out.println( "</head>" );
             out.println( "<body>" );
-            out.println( "<h1>Hello, World</h1>" );
+            out.println( "<h1>It`s "+request.getServletPath()+" page</h1>" );
+            out.println( "<a href='catalog'>Каталог</a><br>" );
+            out.println( "<a href='product'>Продукты</a><br>" );
+            out.println( "<a href='cart'>Корзина</a><br>" );
+            out.println( "<a href='order'>История заказов</a><br>" );
             out.println( "</body>" );
             out.println( "</html>" );
         }
