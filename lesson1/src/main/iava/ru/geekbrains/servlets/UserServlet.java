@@ -64,7 +64,7 @@ public class UserServlet extends HttpServlet {
             user.setPassword(req.getParameter("password"));
             userRepository.save(user);
 
-           resp.sendRedirect(getServletContext().getContextPath() + "/users");
+            resp.sendRedirect(getServletContext().getContextPath() + "/users");
         } catch (SQLException e) {
             throw new ServletException(e);
         }
