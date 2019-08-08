@@ -21,13 +21,6 @@
         <jsp:param name="menu" value="${menu}"/>
     </jsp:include>
 
-
-
-        <jsp:include page="items.jsp">
-            <jsp:param name="displays" value="${displays}"/>
-            <jsp:param name="notebooks" value="${notebooks}"/>
-        </jsp:include>
-
 </div>
 
 <body>
