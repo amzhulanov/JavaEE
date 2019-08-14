@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import ru.geekbrains.persist.Menu;
 import ru.geekbrains.persist.MenuRepository;
 import ru.geekbrains.persist.item.Display;
-import ru.geekbrains.persist.item.Item;
 import ru.geekbrains.persist.item.ItemRepository;
 import ru.geekbrains.persist.item.Notebook;
 
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 @WebServlet(name = "CatalogServlet", urlPatterns = "/catalog")
