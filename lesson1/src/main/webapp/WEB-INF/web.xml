@@ -27,8 +27,16 @@
         <servlet-name>Error404Handler</servlet-name>
         <servlet-class>ru.geekbrains.servlets.Error404Handler</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>faces-servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
+    <servlet-mapping>
+        <servlet-name>faces-servlet</servlet-name>
+        <url-pattern>*.xhtml</url-pattern>
+    </servlet-mapping>
 
     <!--
      <url-pattern></url-pattern> - маппинг на контекст приложения http://localhost:8080/simple-webapp
