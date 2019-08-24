@@ -32,7 +32,7 @@ public class UserRepository implements Serializable {
 
     @PostConstruct
     public void init() throws SQLException {
-        this.conn = (Connection) servletContext.getAttribute("jdbcConnection");
+        this.conn = (Connection) servletContext.getAttribute("jdbcConnection1");
         createTableIfNotExists(conn);
     }
 

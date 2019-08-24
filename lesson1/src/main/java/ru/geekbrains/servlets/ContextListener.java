@@ -56,6 +56,7 @@ public class ContextListener implements ServletContextListener {
         logger.info("AAAAA - Info. context.setAttribute(\"menuRepository\", menuRepository)");
         ItemRepository itemRepository=new ItemRepository();
         context.setAttribute("itemRepository", itemRepository);
+
     }
 
     private boolean isNotNullOrEmpty(String str) {

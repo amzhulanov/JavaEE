@@ -3,37 +3,58 @@ package ru.geekbrains.persist.item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.geekbrains.persist.MenuRepository;
+import ru.geekbrains.persist.User;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import javax.servlet.ServletContext;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+@Singleton
 public class ItemRepository {
     private Logger logger = LoggerFactory.getLogger(MenuRepository.class);
 
+    @Inject
+    private ServletContext servletContext;
+    private Connection conn1;
 
     public ItemRepository() {
     }
 
-    public List<Notebook> addNotebook(){
-        List<Notebook> notebooks =new ArrayList<>();
-        notebooks.add(new Notebook("ноутбук","25999 руб","Vivobook","Asus","black","15.6 дюймов"));
-        notebooks.add(new Notebook("ноутбук1","10999 руб","NB61","Irbis","white","14 дюймов"));
-        notebooks.add(new Notebook("ноутбук2","8999 руб","NB105","Irbis","grey","10.1 дюймов"));
-        notebooks.add(new Notebook("ноутбук3","89949 руб","Тундра","Irbis","grey","10.1 дюймов"));
-        notebooks.add(new Notebook("ноутбук4","89929 руб","ывв4","Эльбрус","grey","10.1 дюймов"));
-        //logger.info("ItemRepository addNotebooks = "+notebooks.get(1).getName());
-        return notebooks;
+    public ItemRepository(Connection conn1) throws SQLException {
+        this.conn1 = conn1;
     }
 
-    public List<Display> addDisplay(){
-        List<Display> displays=new ArrayList<>();
-        displays.add(new Display("Display","7499 руб","22MK600","LG","1920x1080 px"));
-        displays.add(new Display("Display1","11499 руб","C27F","Samsung","1920x1080 px"));
-        displays.add(new Display("Display2","15499 руб","U28E","Dell","1920x1080 px"));
-        displays.add(new Display("Display3","3499 руб","U48E","Makito","1920x1080 px"));
-        displays.add(new Display("Display4","15499 руб","U228E","Celeron","1920x1080 px"));
+    @PostConstruct
+    public void init() throws SQLException {
+        this.conn1 = (Connection) servletContext.getAttribute("jdbcConnection");
+    }
 
-        return displays;
+       public List<Item> getAllItems() throws SQLException {
+        List<Item> res=new ArrayList<>();
+           logger.info("ItemRepository.getAllItems - Create List Items");
+        try (Statement stmt = conn1.createStatement()) {
+            logger.info("conn1.createStatememt - Ok");
+            ResultSet rs = stmt.executeQuery("select id from network_chat.items");//", name, cost, vendor,category from items");
+           // ,category where items.category=category.id
+            logger.info("ItemRepository.getAllItems rs.name="+rs.getString(2));
+            while (rs.next()) {
+                res.add(new Item(rs.getInt(1),"ttt", 100.6,"nnn",23));
+                               /*  rs.getString(2),
+                                 rs.getFloat(3),
+                                 rs.getString(4),
+                                 rs.getInt(5)));*/
+            }
+        }catch(Exception e){
+            logger.error("ItemRepository.getAllItems - conn1 not created!!!");
+        }
+        return res;
     }
 
 }

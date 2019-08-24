@@ -4,10 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.geekbrains.persist.Menu;
 import ru.geekbrains.persist.MenuRepository;
-import ru.geekbrains.persist.item.Display;
-import ru.geekbrains.persist.item.Item;
 import ru.geekbrains.persist.item.ItemRepository;
-import ru.geekbrains.persist.item.Notebook;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -16,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 @WebServlet(name = "CatalogServlet", urlPatterns = "/catalog")
@@ -49,13 +45,13 @@ public class CatalogServlet extends HttpServlet {
         List<Menu> menu = menuRepository.fillMenu();
         request.setAttribute("menu", menu);
 
-        List<Display> displays = itemRepository.addDisplay();
-        request.setAttribute("displays", displays);
+        //List<Display> displays = itemRepository.addDisplay();
+       // request.setAttribute("displays", displays);
         //logger.info("CatalogServlet displays:" + displays.get(1).getName() );
 
-        List<Notebook> notebooks = itemRepository.addNotebook();
+       // List<Notebook> notebooks = itemRepository.addNotebook();
         //logger.info("CatalogServlet notebooks:" + notebooks.get(1).getName());
-        request.setAttribute("notebooks", notebooks);
+       // request.setAttribute("notebooks", notebooks);
 
         request.getRequestDispatcher("WEB-INF/VIEWS/catalog.jsp").forward(request, response);
     }
