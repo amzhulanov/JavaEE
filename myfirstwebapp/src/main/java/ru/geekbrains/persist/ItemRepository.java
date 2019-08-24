@@ -32,7 +32,7 @@ public class ItemRepository {
 
     @PostConstruct
     public void init() throws SQLException {
-        this.conn = (Connection) servletContext.getAttribute("jdbcConnectionString");
+        this.conn = (Connection) servletContext.getAttribute("jdbcConnection");
         createTableIfNotExists(conn);
     }
 
@@ -40,14 +40,16 @@ public class ItemRepository {
 
     public List<Item> getAllItems() throws SQLException {
         List<Item> res = new ArrayList<>();
-        Statement stmt = conn.createStatement();
-        //try (Statement stmt = conn.createStatement()) {
-            ResultSet rs = stmt.executeQuery("select id from users");
+        try (Statement stmt = conn.createStatement()) {
+            //ResultSet rs = stmt.executeQuery("select id, login, password from users");
+            ResultSet rs = stmt.executeQuery("select id,name,vendor,category from items");
 
             while (rs.next()) {
-                res.add(new Item(rs.getInt(1), "ttt", 100.6, "nnn", 23));
+                //res.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3)));
+                 res.add(new Item(rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4)));
             }
-     //   }
+        }
+        res.add(new Item(100, "test", "test","test"));
         return res;
     }
 
@@ -56,7 +58,7 @@ public class ItemRepository {
             stmt.execute("create table if not exists items (\n" +
                     "\t id int auto_increment primary key,\n" +
                     "    name varchar(25),\n" +
-                    "    cost float,\n" +
+                 //   "    cost float,\n" +
                     "    vendor varchar(25)\n" +
                     "    category varchar(25)\n" +
                     ");");

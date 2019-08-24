@@ -1,20 +1,23 @@
 package ru.geekbrains.persist.item;
 
-public class Item  {
+public class Item {
     private Integer id;
     private String name;
-    private Double cost;
-    private Integer category;
+   // private Double cost;
+    private String category;
     private String vendor;
 
-    public Item(Integer id, String name, Double cost, String vendor, Integer category) {
-        this.id=id;
-        this.name=name;
-        this.cost=cost;
+    public Item(Integer id, String name, String vendor, String category) {
+        this.id = id;
+        this.name = name;
+        // this.cost=cost;
         this.vendor = vendor;
-        this.category=category;
+        this.category = category;
     }
-    public Integer getId(){return id;}
+
+    public Integer getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -24,19 +27,19 @@ public class Item  {
         this.name = name;
     }
 
-    public Double getCost() {
+   /* public Double getCost() {
         return cost;
     }
 
     public void setCost(Double cost) {
         this.cost = cost;
-    }
+    }*/
 
-    public Integer getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Integer category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
