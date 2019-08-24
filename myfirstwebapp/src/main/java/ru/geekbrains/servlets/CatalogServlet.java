@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.geekbrains.persist.Menu;
 import ru.geekbrains.persist.MenuRepository;
-import ru.geekbrains.persist.item.ItemRepository;
+import ru.geekbrains.persist.ItemRepository;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

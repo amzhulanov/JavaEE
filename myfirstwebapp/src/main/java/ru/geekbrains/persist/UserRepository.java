@@ -32,7 +32,7 @@ public class UserRepository implements Serializable {
 
     @PostConstruct
     public void init() throws SQLException {
-        this.conn = (Connection) servletContext.getAttribute("jdbcConnection1");
+        this.conn = (Connection) servletContext.getAttribute("jdbcConnection");
         createTableIfNotExists(conn);
     }
 
@@ -86,10 +86,12 @@ public class UserRepository implements Serializable {
     public List<User> getAllUsers() throws SQLException {
         List<User> res = new ArrayList<>();
         try (Statement stmt = conn.createStatement()) {
-            ResultSet rs = stmt.executeQuery("select id, login, password from users");
+           ResultSet rs = stmt.executeQuery("select id, login, password from users");
+            //ResultSet rs = stmt.executeQuery("select id,name,vendor from items;");
 
             while (rs.next()) {
                 res.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3)));
+               // res.add(new User(rs.getInt(1), "ttt", "rrr"));
             }
         }
         return res;
@@ -103,6 +105,13 @@ public class UserRepository implements Serializable {
                     "    password varchar(25),\n" +
                     "    unique index uq_login(login)\n" +
                     ");");
+            /*stmt.execute("create table if not exists items (\n" +
+                    "\t id int auto_increment primary key,\n" +
+                    "    name varchar(25),\n" +
+                    "    cost float,\n" +
+                    "    vendor varchar(25)\n" +
+                    "    category varchar(25)\n" +
+                    ");");*/
         }
     }
 
