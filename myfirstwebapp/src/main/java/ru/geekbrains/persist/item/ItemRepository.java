@@ -2,38 +2,97 @@ package ru.geekbrains.persist.item;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.geekbrains.persist.MenuRepository;
+import ru.geekbrains.persist.UserRepository;
+import ru.geekbrains.persist.item.Item;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import javax.servlet.ServletContext;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Singleton
 public class ItemRepository {
-    private Logger logger = LoggerFactory.getLogger(MenuRepository.class);
 
+    @Inject
+    private ServletContext servletContext;
 
+    private Connection conn;
+
+    //конструктор требуется для аннотации Inject
     public ItemRepository() {
     }
 
-    public List<Notebook> addNotebook(){
-        List<Notebook> notebooks =new ArrayList<>();
-        notebooks.add(new Notebook("ноутбук","25999 руб","Vivobook","Asus","black","15.6 дюймов"));
-        notebooks.add(new Notebook("ноутбук1","10999 руб","NB61","Irbis","white","14 дюймов"));
-        notebooks.add(new Notebook("ноутбук2","8999 руб","NB105","Irbis","grey","10.1 дюймов"));
-        notebooks.add(new Notebook("ноутбук3","89949 руб","Тундра","Irbis","grey","10.1 дюймов"));
-        notebooks.add(new Notebook("ноутбук4","89929 руб","ывв4","Эльбрус","grey","10.1 дюймов"));
-        //logger.info("ItemRepository addNotebooks = "+notebooks.get(1).getName());
-        return notebooks;
+    private Logger logger = LoggerFactory.getLogger(UserRepository.class);
+
+    //конструктор для установки подключения к БД
+    public ItemRepository(Connection conn) throws SQLException {
+        this.conn = conn;
+        createTableIfNotExists(conn);
     }
 
-    public List<Display> addDisplay(){
-        List<Display> displays=new ArrayList<>();
-        displays.add(new Display("Display","7499 руб","22MK600","LG","1920x1080 px"));
-        displays.add(new Display("Display1","11499 руб","C27F","Samsung","1920x1080 px"));
-        displays.add(new Display("Display2","15499 руб","U28E","Dell","1920x1080 px"));
-        displays.add(new Display("Display3","3499 руб","U48E","Makito","1920x1080 px"));
-        displays.add(new Display("Display4","15499 руб","U228E","Celeron","1920x1080 px"));
-
-        return displays;
+    @PostConstruct
+    public void init() throws SQLException {
+        this.conn = (Connection) servletContext.getAttribute("jdbcConnection");
+        createTableIfNotExists(conn);
     }
 
+    public List<Item> getAllItems() throws SQLException {
+        List<Item> res = new ArrayList<>();
+        try (Statement stmt = conn.createStatement()) {
+            ResultSet rs = stmt.executeQuery("select id,name,vendor,category from items");
+            while (rs.next()) {
+                res.add(new Item(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)));
+            }
+        } catch (Exception e) {
+            logger.info("ItemsRepository.getAllItems - Error with createStatement : " + e);
+        }
+        return res;
+    }
+
+    private void createTableIfNotExists(Connection conn) throws SQLException {
+        try (Statement stmt = conn.createStatement()) {
+            stmt.execute("create table if not exists items (\n" +
+                    "\t id int auto_increment primary key,\n" +
+                    "    name varchar(25),\n" +
+                    //   "    cost float,\n" +
+                    "    vendor varchar(25),\n" +
+                    "    category varchar(25)\n" +
+                    ");");
+        }
+    }
+
+    public void saveItem(Item item) throws SQLException {
+        try (PreparedStatement stmt = conn.prepareStatement(
+                "update items set category = ?, name = ?, vendor=? where id = ?;")) {
+            stmt.setString(1, item.getCategory());
+            stmt.setString(2, item.getName());
+            stmt.setString(3, item.getVendor());
+            stmt.setInt(4, item.getId());
+            stmt.execute();
+            logger.info("itemRepository.save Item=" + item.getId());
+        }
+    }
+
+    public void deleteItem(Item item) throws SQLException {
+        try (PreparedStatement stmt = conn.prepareStatement(
+                "delete from items where id = ?;")) {
+            stmt.setInt(1, item.getId());
+            stmt.execute();
+            logger.info("itemRepository.delete Item=" + item.getId());
+        }
+    }
+
+    public void addItem(Item item) throws SQLException {
+        try (PreparedStatement stmt = conn.prepareStatement(
+                "insert into items (category,name,vendor) values (?,?,?);")) {
+            stmt.setString(1, item.getCategory());
+            stmt.setString(2, item.getName());
+            stmt.setString(3, item.getVendor());
+            stmt.execute();
+            logger.info("itemRepository.add Item=" + item.getName());
+        }
+    }
 }

@@ -1,17 +1,24 @@
 package ru.geekbrains.persist.item;
 
-public abstract class Item  {
-   // private Integer id;
+public class Item {
+    private Integer id;
     private String name;
-    private String cost;
-    private String model;
+    private String category;
     private String vendor;
 
-    public Item(String name, String cost, String model, String vendor) {
-       // this.id=id;
-        this.name=name;
-        this.model = model;
+    public Item() {
+        this.id = -1;
+    }
+
+    public Item(Integer id, String name, String vendor, String category) {
+        this.id = id;
+        this.name = name;
         this.vendor = vendor;
+        this.category = category;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getName() {
@@ -22,20 +29,12 @@ public abstract class Item  {
         this.name = name;
     }
 
-    public String getCost() {
-        return cost;
+    public String getCategory() {
+        return category;
     }
 
-    public void setCost(String cost) {
-        this.cost = cost;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getVendor() {

@@ -58,8 +58,6 @@
         <servlet-name>Error404Handler</servlet-name>
         <url-pattern>/error404</url-pattern>
     </servlet-mapping>
-    
-
 
 
     <error-page>

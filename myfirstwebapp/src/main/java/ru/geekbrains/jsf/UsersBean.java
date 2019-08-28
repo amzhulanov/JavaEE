@@ -58,14 +58,10 @@ public class UsersBean implements Serializable {
 
     public String createUser() {
         this.user = new User();
-        logger.info("UsersBean.createUser new User="+this.user.getId());
         return "/user.xhtml?faces-redirect=true";
     }
 
     public String saveUser() throws SQLException {
-        logger.info("UsersBean.saveUser new User="+this.user.getId());
-        logger.info("UsersBean.saveUser new Login="+this.user.getLogin());
-        logger.info("UsersBean.saveUser new Password="+this.user.getPassword());
         if (this.user.getId()!=-1){
             userRepository.save(this.user);
         }else{
