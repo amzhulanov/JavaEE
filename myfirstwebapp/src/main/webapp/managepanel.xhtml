@@ -24,6 +24,22 @@
                             <h:commandButton value="Edit" action="#{itemsBean.openItem()}" styleClass="mr-1" />
                         </td>
                     </tr>
+                <tr>
+                    <td>
+                        <h:outputText value="Категории"/>
+                    </td>
+                    <td>
+                        <h:commandButton value="Edit" action="#{categoriesBean.openCategory()}" styleClass="mr-1" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h:outputText value="Заказы"/>
+                    </td>
+                    <td>
+                        <h:commandButton value="Edit" action="#{ordersBean.openOrder()}" styleClass="mr-1" />
+                    </td>
+                </tr>
             </table>
         </h:form>
     </div>

@@ -3,7 +3,7 @@ package ru.geekbrains.jsf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.geekbrains.persist.item.Item;
-import ru.geekbrains.persist.ItemRepository;
+import ru.geekbrains.persist.item.ItemRepository;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -42,15 +42,32 @@ public class ItemsBean implements Serializable {
     }
 
     public List<Item> getAllItems() throws SQLException {
-        logger.info("ItemsBean.getAllItems - Before create List Items");
         return itemRepository.getAllItems();
 
     }
 
     public String editItem(Item item) {
-        return null;
+        this.item = item;
+        return "/item.xhtml?faces-redirect=true";
     }
 
-    public void deleteItem(Item item) {
+    public void deleteItem(Item item) throws SQLException {
+        itemRepository.deleteItem(item);
+
+    }
+
+    public String saveItem(Item item) throws SQLException {
+        if (this.item.getId()!=-1){
+            itemRepository.saveItem(this.item);
+        }else{
+            itemRepository.addItem(this.item);
+        }
+
+        return "/items.xhtml?faces-redirect=true";
+    }
+
+    public String addItem() {
+        this.item = new Item();
+        return "/item.xhtml?faces-redirect=true";
     }
 }

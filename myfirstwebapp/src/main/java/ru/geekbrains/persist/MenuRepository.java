@@ -20,7 +20,7 @@ public class MenuRepository {
         res.add(new Menu(5,"cart","Корзина"));
         res.add(new Menu(6,"about","О компании"));
         res.add(new Menu(7,"personal-account","Личный кабинет"));
-        logger.info("MenuRepository addNotebooks = "+res.get(1).getItem());
+        res.add(new Menu(8,"managepanel","Админка"));
         return res;
     }
 }

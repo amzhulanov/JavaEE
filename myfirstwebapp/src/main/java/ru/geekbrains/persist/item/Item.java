@@ -3,14 +3,16 @@ package ru.geekbrains.persist.item;
 public class Item {
     private Integer id;
     private String name;
-   // private Double cost;
     private String category;
     private String vendor;
+
+    public Item() {
+        this.id = -1;
+    }
 
     public Item(Integer id, String name, String vendor, String category) {
         this.id = id;
         this.name = name;
-        // this.cost=cost;
         this.vendor = vendor;
         this.category = category;
     }
@@ -26,14 +28,6 @@ public class Item {
     public void setName(String name) {
         this.name = name;
     }
-
-   /* public Double getCost() {
-        return cost;
-    }
-
-    public void setCost(Double cost) {
-        this.cost = cost;
-    }*/
 
     public String getCategory() {
         return category;

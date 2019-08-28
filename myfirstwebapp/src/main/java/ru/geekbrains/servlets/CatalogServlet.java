@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.geekbrains.persist.Menu;
 import ru.geekbrains.persist.MenuRepository;
-import ru.geekbrains.persist.ItemRepository;
+import ru.geekbrains.persist.item.ItemRepository;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -46,12 +46,12 @@ public class CatalogServlet extends HttpServlet {
         request.setAttribute("menu", menu);
 
         //List<Display> displays = itemRepository.addDisplay();
-       // request.setAttribute("displays", displays);
+        // request.setAttribute("displays", displays);
         //logger.info("CatalogServlet displays:" + displays.get(1).getName() );
 
-       // List<Notebook> notebooks = itemRepository.addNotebook();
+        // List<Notebook> notebooks = itemRepository.addNotebook();
         //logger.info("CatalogServlet notebooks:" + notebooks.get(1).getName());
-       // request.setAttribute("notebooks", notebooks);
+        // request.setAttribute("notebooks", notebooks);
 
         request.getRequestDispatcher("WEB-INF/VIEWS/catalog.jsp").forward(request, response);
     }

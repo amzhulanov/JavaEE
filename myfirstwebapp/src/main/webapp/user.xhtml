@@ -17,6 +17,7 @@
                 <h:outputLabel value="User user" for="exampleInputUsername"/>
                 <h:inputText styleClass="form-control" id="exampleInputUsername" placeholder="Enter username"
                              value="#{usersBean.user.login}" required="true" requiredMessage="Login is required">
+                    <h:message for="exampleInputUsername" style="color:red" />
                     <f:ajax event="blur" render="loginValidationError"/>
                 </h:inputText>
 
@@ -25,7 +26,8 @@
             <div class="form-group">
                 <h:outputLabel value="Password" for="exampleInputPassword"/>
                 <h:inputSecret styleClass="form-control" id="exampleInputPassword" placeholder="Password"
-                               value="${usersBean.user.password}"/>
+                               value="${usersBean.user.password}" >
+                </h:inputSecret>
             </div>
             <h:commandButton value="Submit" styleClass="btn btn-primary" action="#{usersBean.saveUser()}"/>
         </h:form>

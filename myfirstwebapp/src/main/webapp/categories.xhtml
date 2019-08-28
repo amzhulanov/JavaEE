@@ -4,46 +4,34 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <ui:include src="WEB-INF/jsf.fragments/head.xhtml">
-    <ui:param name="title" value="Список товаров"></ui:param>
+    <ui:param name="title" value="Категории товаров"></ui:param>
 </ui:include>
 
 <h:body>
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="#">Список товаров в каталоге</a>
+        <a class="navbar-brand" href="#">Категории товаров</a>
     </nav>
     <div class="container">
-        <h:form id="itemsForm">
-            <h:dataTable value="#{itemsBean.allItems}" var="item">
+        <h:form id="categoryForm">
+            <h:dataTable value="#{categoriesBean.allCategories}" var="category">
                 <h:column>
                     <f:facet name="header">Id</f:facet>
-                    #{item.id}
+                    #{category.id}
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Category</f:facet>
-                    #{item.category}
+                    <f:facet name="header">Категория</f:facet>
+                    #{category.name}
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Name</f:facet>
-                    #{item.name}
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Vendor</f:facet>
-                    #{item.vendor}
-                </h:column>
-
-
-
-                <h:column>
-                    <h:commandButton value="Edit" action="#{itemsBean.editItem(item)}" styleClass="mr-1" />
-                    <h:commandButton value="Delete" action="#{itemsBean.deleteItem(item)}" >
+                    <h:commandButton value="Edit" action="#{categoriesBean.editCategory(category)}" styleClass="mr-1" />
+                    <h:commandButton value="Delete" action="#{categoriesBean.deleteCategory(category)}" >
                     </h:commandButton>
                 </h:column>
 
             </h:dataTable>
-            <h:commandButton value="Add" action="#{itemsBean.addItem()}" styleClass="mr-1" />
+            <h:commandButton value="Add" action="#{categoriesBean.addCategory()}" styleClass="mr-1" />
         </h:form>
     </div>
 

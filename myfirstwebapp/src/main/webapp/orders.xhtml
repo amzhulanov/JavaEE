@@ -4,46 +4,32 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <ui:include src="WEB-INF/jsf.fragments/head.xhtml">
-    <ui:param name="title" value="Список товаров"></ui:param>
+    <ui:param name="title" value="Зарегистрированные заказы"></ui:param>
 </ui:include>
 
 <h:body>
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="#">Список товаров в каталоге</a>
+        <a class="navbar-brand" href="#">Список заказов</a>
     </nav>
     <div class="container">
-        <h:form id="itemsForm">
-            <h:dataTable value="#{itemsBean.allItems}" var="item">
+        <h:form id="ordersForm">
+            <h:dataTable value="#{ordersBean.allOrders}" var="order">
                 <h:column>
-                    <f:facet name="header">Id</f:facet>
-                    #{item.id}
+                    <f:facet name="header">Номер заказа</f:facet>
+                    #{order.num_order}
                 </h:column>
-
                 <h:column>
-                    <f:facet name="header">Category</f:facet>
-                    #{item.category}
+                    <f:facet name="header">Покупатель</f:facet>
+                    #{order.buyer}
                 </h:column>
-
                 <h:column>
-                    <f:facet name="header">Name</f:facet>
-                    #{item.name}
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Vendor</f:facet>
-                    #{item.vendor}
-                </h:column>
-
-
-
-                <h:column>
-                    <h:commandButton value="Edit" action="#{itemsBean.editItem(item)}" styleClass="mr-1" />
-                    <h:commandButton value="Delete" action="#{itemsBean.deleteItem(item)}" >
+                    <h:commandButton value="Edit" action="#{ordersBean.editOrder(order)}" styleClass="mr-1" />
+                    <h:commandButton value="Delete" action="#{ordersBean.deleteOrder(order)}" >
                     </h:commandButton>
                 </h:column>
 
             </h:dataTable>
-            <h:commandButton value="Add" action="#{itemsBean.addItem()}" styleClass="mr-1" />
+            <h:commandButton value="Add" action="#{ordersBean.addOrder()}" styleClass="mr-1" />
         </h:form>
     </div>
 
