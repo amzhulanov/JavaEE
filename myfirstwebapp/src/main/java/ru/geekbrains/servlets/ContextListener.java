@@ -39,8 +39,6 @@ public class ContextListener implements ServletContextListener {
             Connection connection = DriverManager.getConnection(jdbcConnectionString, username, password);
             // Connection connection =DriverManager.getConnection("jdbc:mysql://localhost:3306/network_chat?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Novosibirsk", "root", "localhost_1");
             context.setAttribute("jdbcConnection", connection);
-            UserRepository userRepository = new UserRepository(connection);
-            context.setAttribute("userRepository", userRepository);
             ItemRepository itemRepository = new ItemRepository(connection);
             context.setAttribute("itemRepository", itemRepository);
             CategoryRepository categoryRepository = new CategoryRepository(connection);

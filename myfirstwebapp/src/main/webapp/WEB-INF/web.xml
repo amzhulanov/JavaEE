@@ -6,19 +6,6 @@
 
     <display-name>Archetype Created Web Application</display-name>
 
-    <context-param>
-        <param-name>jdbcConnection</param-name>
-        <param-value>jdbc:mysql://localhost:3306/network_chat?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Asia/Novosibirsk</param-value>
-    </context-param>
-    <context-param>
-        <param-name>username</param-name>
-        <param-value>root</param-value>
-    </context-param>
-    <context-param>
-        <param-name>password</param-name>
-        <param-value>localhost_1</param-value>
-    </context-param>
-
     <servlet>
         <servlet-name>Error403Handler</servlet-name>
         <servlet-class>ru.geekbrains.servlets.Error403Handler</servlet-class>
@@ -39,8 +26,6 @@
     -->
 
 
-
-
     <servlet>
         <servlet-name>faces-servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -51,7 +36,6 @@
         <servlet-name>faces-servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
-
 
 
     <servlet-mapping>
