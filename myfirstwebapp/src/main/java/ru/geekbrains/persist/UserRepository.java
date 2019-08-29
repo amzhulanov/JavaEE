@@ -3,14 +3,15 @@ package ru.geekbrains.persist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Singleton;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import java.io.Serializable;
 import java.util.List;
 
-@Singleton
-public class UserRepository implements Serializable {
+@ApplicationScoped
+@Named
+public class UserRepository  {
     private Logger logger = LoggerFactory.getLogger(UserRepository.class);
 
     @PersistenceContext(unitName = "ds")
