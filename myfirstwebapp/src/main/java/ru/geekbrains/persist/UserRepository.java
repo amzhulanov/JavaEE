@@ -40,7 +40,6 @@ public class UserRepository  {
         }
     }
 
-
     public User findById(int id) {
         return em.find(User.class, id);
     }

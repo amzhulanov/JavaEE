@@ -5,18 +5,16 @@ import org.slf4j.LoggerFactory;
 import ru.geekbrains.persist.item.Category;
 import ru.geekbrains.persist.item.CategoryRepository;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.ServletContext;
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.List;
 
 @SessionScoped// параметр для определения время жизни Bean`а
 @Named
 public class CategoriesBean implements Serializable {
+    @Inject
     private CategoryRepository categoryRepository;
 
     private Logger logger = LoggerFactory.getLogger(CategoriesBean.class);
@@ -27,47 +25,32 @@ public class CategoriesBean implements Serializable {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setItem(Category category) {
         this.category = category;
     }
 
-    @PostConstruct
-    public void init() {
-        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-        categoryRepository = (CategoryRepository) servletContext.getAttribute("categoryRepository");
-    }
-
-    public String openCategory(){
-        return "/categories.xhtml?faces-redirect=true";
-    }
-
-    public List<Category> getAllCategories() throws SQLException {
+    public List<Category> getAllCategories() {
         return categoryRepository.getAllCategories();
-
     }
 
     public String editCategory(Category category) {
-        this.category = category;
-        return "/categories.xhtml?faces-redirect=true";
+        this.category=category;
+        return "/category.xhtml?faces-redirect=true";
     }
 
-    public void deleteCategory(Category category) throws SQLException {
-        categoryRepository.deleteCategory(category);
+    public void deleteCategory(Category category) {
 
+        categoryRepository.delete(category);
     }
 
-    public String saveCategory(Category category) throws SQLException {
-        if (this.category.getId()!=-1){
-            categoryRepository.saveCategory(this.category);
-        }else{
-            categoryRepository.addCategory(this.category);
-        }
+    public String createCategory() {
 
-        return "/categories.xhtml?faces-redirect=true";
+        this.category=new Category();
+        return "/category.xhtml?faces-redirect=true";
     }
 
-    public String addCategory() {
-        this.category = new Category();
+    public String saveCategory() {
+        categoryRepository.merge(this.category);
         return "/categories.xhtml?faces-redirect=true";
     }
 }

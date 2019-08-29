@@ -2,97 +2,54 @@ package ru.geekbrains.persist.item;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.geekbrains.persist.UserRepository;
-import ru.geekbrains.persist.item.Item;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.servlet.ServletContext;
-import java.sql.*;
-import java.util.ArrayList;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.List;
 
-@Singleton
+@ApplicationScoped
+@Named
 public class ItemRepository {
+    private Logger logger = LoggerFactory.getLogger(ItemRepository.class);
 
-    @Inject
-    private ServletContext servletContext;
+    @PersistenceContext(unitName = "ds")
+    protected EntityManager em;
 
-    private Connection conn;
+    public ItemRepository(){ }
 
-    //конструктор требуется для аннотации Inject
-    public ItemRepository() {
+    @Transactional
+    public Item merge(Item item){
+        return em.merge(item);
     }
 
-    private Logger logger = LoggerFactory.getLogger(UserRepository.class);
+    @Transactional
+    public void delete(Item item){
 
-    //конструктор для установки подключения к БД
-    public ItemRepository(Connection conn) throws SQLException {
-        this.conn = conn;
-        createTableIfNotExists(conn);
-    }
-
-    @PostConstruct
-    public void init() throws SQLException {
-        this.conn = (Connection) servletContext.getAttribute("jdbcConnection");
-        createTableIfNotExists(conn);
-    }
-
-    public List<Item> getAllItems() throws SQLException {
-        List<Item> res = new ArrayList<>();
-        try (Statement stmt = conn.createStatement()) {
-            ResultSet rs = stmt.executeQuery("select id,name,vendor,category from items");
-            while (rs.next()) {
-                res.add(new Item(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)));
+        try {
+            Item attached =findById(item.getId());
+            if (attached!=null){
+                em.remove(attached);
             }
         } catch (Exception e) {
-            logger.info("ItemsRepository.getAllItems - Error with createStatement : " + e);
-        }
-        return res;
-    }
-
-    private void createTableIfNotExists(Connection conn) throws SQLException {
-        try (Statement stmt = conn.createStatement()) {
-            stmt.execute("create table if not exists items (\n" +
-                    "\t id int auto_increment primary key,\n" +
-                    "    name varchar(25),\n" +
-                    //   "    cost float,\n" +
-                    "    vendor varchar(25),\n" +
-                    "    category varchar(25)\n" +
-                    ");");
+            logger.error("Error with entity class", e);
+            throw new IllegalStateException(e);
         }
     }
 
-    public void saveItem(Item item) throws SQLException {
-        try (PreparedStatement stmt = conn.prepareStatement(
-                "update items set category = ?, name = ?, vendor=? where id = ?;")) {
-            stmt.setString(1, item.getCategory());
-            stmt.setString(2, item.getName());
-            stmt.setString(3, item.getVendor());
-            stmt.setInt(4, item.getId());
-            stmt.execute();
-            logger.info("itemRepository.save Item=" + item.getId());
-        }
+    public Item findById(int id) {
+        return em.find(Item.class, id);
     }
 
-    public void deleteItem(Item item) throws SQLException {
-        try (PreparedStatement stmt = conn.prepareStatement(
-                "delete from items where id = ?;")) {
-            stmt.setInt(1, item.getId());
-            stmt.execute();
-            logger.info("itemRepository.delete Item=" + item.getId());
-        }
+    public boolean existsById(int id) {
+        return findById(id) != null;
     }
 
-    public void addItem(Item item) throws SQLException {
-        try (PreparedStatement stmt = conn.prepareStatement(
-                "insert into items (category,name,vendor) values (?,?,?);")) {
-            stmt.setString(1, item.getCategory());
-            stmt.setString(2, item.getName());
-            stmt.setString(3, item.getVendor());
-            stmt.execute();
-            logger.info("itemRepository.add Item=" + item.getName());
-        }
+    public List<Item> getAllItems() {
+        return em.createQuery("from Item ").getResultList();
     }
+
+
 }

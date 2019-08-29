@@ -2,77 +2,53 @@ package ru.geekbrains.persist.item;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.geekbrains.persist.UserRepository;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.servlet.ServletContext;
-import java.sql.*;
-import java.util.ArrayList;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.List;
 
-@Singleton
+@ApplicationScoped
+@Named
 public class CategoryRepository {
+    private Logger logger = LoggerFactory.getLogger(CategoryRepository.class);
 
-    @Inject
-    private ServletContext servletContext;
-
-    private Connection conn;
-
-    private Logger logger = LoggerFactory.getLogger(UserRepository.class);
+    @PersistenceContext(unitName = "ds")
+    protected EntityManager em;
 
     public CategoryRepository(){
     }
 
-    public CategoryRepository(Connection conn) throws SQLException {
-        this.conn = conn;
+    @Transactional
+    public Category merge(Category category){
+        return em.merge(category);
     }
 
-    @PostConstruct
-    public void init() throws SQLException {
-        this.conn = (Connection) servletContext.getAttribute("jdbcConnection");
-    }
+    @Transactional
+    public void delete(Category category){
 
-
-
-    public List<Category> getAllCategories() throws SQLException {
-        List<Category> res = new ArrayList<>();
-        try (Statement stmt = conn.createStatement()) {
-            ResultSet rs = stmt.executeQuery("select id,name from categories");
-
-            while (rs.next()) {
-                res.add(new Category(rs.getInt(1), rs.getString(2)));
+        try {
+            Category attached =findById(category.getId());
+            if (attached!=null){
+                em.remove(attached);
             }
-        }catch(Exception e){
-            logger.info("CategoryRepository.getAllCategories - Error with createStatement : "+e);
-        }
-        return res;
-    }
-
-
-    public void saveCategory(Category category) throws SQLException {
-        try (PreparedStatement stmt = conn.prepareStatement(
-                "update categories set name = ? where id = ?;")) {
-            stmt.setString(1, category.getName());
-            stmt.setInt(2, category.getId());
-            stmt.execute();
+        } catch (Exception e) {
+            logger.error("Error with entity class", e);
+            throw new IllegalStateException(e);
         }
     }
 
-    public void deleteCategory(Category category) throws SQLException {
-        try (PreparedStatement stmt = conn.prepareStatement(
-                "delete from categories where id = ?;")) {
-            stmt.setInt(1, category.getId());
-            stmt.execute();
-        }
+    public Category findById(int id) {
+        return em.find(Category.class, id);
     }
 
-    public void addCategory(Category category) throws SQLException {
-        try (PreparedStatement stmt = conn.prepareStatement(
-                "insert into categories (name) values (?);")) {
-            stmt.setString(1, category.getName());
-            stmt.execute();
-        }
+    public boolean existsById(int id) {
+        return findById(id) != null;
+    }
+
+    public List<Category> getAllCategories() {
+        return em.createQuery("from Category ").getResultList();
     }
 }

@@ -4,32 +4,23 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <ui:include src="WEB-INF/jsf.fragments/head.xhtml">
-    <ui:param name="title" value="Зарегистрированные заказы"></ui:param>
+    <ui:param name="title" value="Editing form Category"></ui:param>
 </ui:include>
 
 <h:body>
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="#">Список заказов</a>
+        <a class="navbar-brand" href="#">Карточка категории</a>
     </nav>
     <div class="container">
-        <h:form id="ordersForm">
-            <h:dataTable value="#{ordersBean.allOrders}" var="order">
-                <h:column>
-                    <f:facet name="header">Номер заказа</f:facet>
-                    #{order.num_order}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Покупатель</f:facet>
-                    #{order.buyer}
-                </h:column>
-                <h:column>
-                    <h:commandButton value="Edit" action="#{ordersBean.editOrder(order)}" styleClass="mr-1" />
-                    <h:commandButton value="Delete" action="#{ordersBean.deleteOrder(order)}" >
-                    </h:commandButton>
-                </h:column>
+        <h:form id="categoryForm">
+            <div class="category">
+                <h:outputLabel value="Category" for="categoryForm"/>
+                <h:inputText styleClass="form-control" id="Category" placeholder="Enter category"
+                             value="#{categoriesBean.category.name}" required="true" requiredMessage="Category is required">
+                </h:inputText>
+            </div>
 
-            </h:dataTable>
-            <h:commandButton value="Add" action="#{ordersBean.createOrder()}" styleClass="mr-1" />
+            <h:commandButton value="Submit" styleClass="btn btn-primary" action="#{categoriesBean.saveCategory()}"/>
         </h:form>
     </div>
 

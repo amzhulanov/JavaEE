@@ -5,18 +5,16 @@ import org.slf4j.LoggerFactory;
 import ru.geekbrains.persist.item.Item;
 import ru.geekbrains.persist.item.ItemRepository;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.ServletContext;
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.List;
 
 @SessionScoped// параметр для определения время жизни Bean`а
 @Named
 public class ItemsBean implements Serializable {
+    @Inject
     private ItemRepository itemRepository;
 
     private Logger logger = LoggerFactory.getLogger(ItemsBean.class);
@@ -31,43 +29,28 @@ public class ItemsBean implements Serializable {
         this.item = item;
     }
 
-    @PostConstruct
-    public void init() {
-        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-        itemRepository = (ItemRepository) servletContext.getAttribute("itemRepository");
-    }
-
-    public String openItem(){
-        return "/items.xhtml?faces-redirect=true";
-    }
-
-    public List<Item> getAllItems() throws SQLException {
+    public List<Item> getAllItems() {
         return itemRepository.getAllItems();
-
     }
 
     public String editItem(Item item) {
-        this.item = item;
+        this.item=item;
         return "/item.xhtml?faces-redirect=true";
     }
 
-    public void deleteItem(Item item) throws SQLException {
-        itemRepository.deleteItem(item);
+    public void deleteItem(Item item) {
 
+        itemRepository.delete(item);
     }
 
-    public String saveItem(Item item) throws SQLException {
-        if (this.item.getId()!=-1){
-            itemRepository.saveItem(this.item);
-        }else{
-            itemRepository.addItem(this.item);
-        }
+    public String createItem() {
 
+        this.item=new Item();
+        return "/item.xhtml?faces-redirect=true";
+    }
+
+    public String saveItem() {
+        itemRepository.merge(this.item);
         return "/items.xhtml?faces-redirect=true";
-    }
-
-    public String addItem() {
-        this.item = new Item();
-        return "/item.xhtml?faces-redirect=true";
     }
 }
