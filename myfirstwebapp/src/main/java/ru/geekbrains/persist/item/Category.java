@@ -1,6 +1,7 @@
 package ru.geekbrains.persist.item;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="categories")
@@ -12,6 +13,9 @@ public class Category {
 
     @Column(name="name",unique = true,nullable = false)
     private String name;
+
+
+
 
     public Category() {    }
 
