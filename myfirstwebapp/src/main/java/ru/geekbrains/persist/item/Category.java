@@ -1,12 +1,23 @@
 package ru.geekbrains.persist.item;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name="categories")
 public class Category {
-    private Integer id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name="name",unique = true,nullable = false)
     private String name;
 
-    public Category() {
-        this.id = -1;
-    }
+
+
+
+    public Category() {    }
 
     public Category(Integer id, String name) {
         this.id=id;

@@ -1,14 +1,23 @@
 package ru.geekbrains.persist.item;
 
+
+import javax.persistence.*;
+
+@Entity
+@Table(name="orders")
 public class Order {
 
-    private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name="num_order",unique = true,nullable = false)
     private String num_order;
+
+    @Column(name="buyer",unique = true,nullable = false)
     private String buyer;
 
-    public Order() {
-        this.id = -1;
-    }
+    public Order() {    }
 
     public Order(Integer id, String num_order, String buyer) {
         this.id = id;
@@ -18,6 +27,10 @@ public class Order {
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNum_order() {
