@@ -1,20 +1,20 @@
 package ru.geekbrains.jsf;
 
-import ru.geekbrains.persist.User;
-import ru.geekbrains.persist.UserRepository;
+import ru.geekbrains.persist.item.User;
+import ru.geekbrains.persist.repository.UserRepository;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ApplicationScoped
-@Named
+@Stateless
+@TransactionManagement(javax.ejb.TransactionManagementType.BEAN)
 public class UserService {
 
-    @Inject
+    @EJB
     private UserRepository userRepository;
 
     @Transactional

@@ -1,6 +1,6 @@
-package ru.geekbrains.jsf.serviceLayer;
+package ru.geekbrains.jsf;
 
-import ru.geekbrains.persist.Role;
+import ru.geekbrains.persist.item.Role;
 
 import java.util.Objects;
 

@@ -2,8 +2,8 @@ package ru.geekbrains.servlets;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.geekbrains.persist.User;
-import ru.geekbrains.persist.UserRepository;
+import ru.geekbrains.persist.item.User;
+import ru.geekbrains.persist.repository.UserRepository;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

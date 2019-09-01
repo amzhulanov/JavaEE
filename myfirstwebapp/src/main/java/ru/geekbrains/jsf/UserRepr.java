@@ -1,7 +1,6 @@
 package ru.geekbrains.jsf;
 
-import ru.geekbrains.jsf.serviceLayer.RoleRepr;
-import ru.geekbrains.persist.User;
+import ru.geekbrains.persist.item.User;
 
 import java.util.HashSet;
 import java.util.Set;

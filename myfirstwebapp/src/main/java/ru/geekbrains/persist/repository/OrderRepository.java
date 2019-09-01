@@ -1,24 +1,18 @@
-package ru.geekbrains.persist.item;
+package ru.geekbrains.persist.repository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.geekbrains.persist.UserRepository;
+import ru.geekbrains.persist.item.Order;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.servlet.ServletContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.Transactional;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
-@ApplicationScoped
-@Named
+@Stateless
 public class OrderRepository {
 
     private Logger logger = LoggerFactory.getLogger(UserRepository.class);
@@ -33,12 +27,15 @@ public class OrderRepository {
         return em.merge(order);
     }
 
+
+
     @Transactional
-    public void delete(Order order){
+    public void delete(int id){
 
         try {
-            Order attached =findById(order.getId());
+            Order attached =findById(id);
             if (attached!=null){
+
                 em.remove(attached);
             }
         } catch (Exception e) {

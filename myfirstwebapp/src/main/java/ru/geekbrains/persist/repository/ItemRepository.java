@@ -1,36 +1,34 @@
-package ru.geekbrains.persist.item;
+package ru.geekbrains.persist.repository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.geekbrains.persist.item.Item;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@ApplicationScoped
-@Named
-public class CategoryRepository {
-    private Logger logger = LoggerFactory.getLogger(CategoryRepository.class);
+@Stateless
+public class ItemRepository {
+    private Logger logger = LoggerFactory.getLogger(ItemRepository.class);
 
     @PersistenceContext(unitName = "ds")
     protected EntityManager em;
 
-    public CategoryRepository(){
+    public ItemRepository(){ }
+
+    @Transactional
+    public Item merge(Item item){
+        return em.merge(item);
     }
 
     @Transactional
-    public Category merge(Category category){
-        return em.merge(category);
-    }
-
-    @Transactional
-    public void delete(Category category){
+    public void delete(int id){
 
         try {
-            Category attached =findById(category.getId());
+            Item attached =findById(id);
             if (attached!=null){
                 em.remove(attached);
             }
@@ -40,15 +38,17 @@ public class CategoryRepository {
         }
     }
 
-    public Category findById(int id) {
-        return em.find(Category.class, id);
+    public Item findById(int id) {
+        return em.find(Item.class, id);
     }
 
     public boolean existsById(int id) {
         return findById(id) != null;
     }
 
-    public List<Category> getAllCategories() {
-        return em.createQuery("from Category ").getResultList();
+    public List<Item> getAllItems() {
+        return em.createQuery("from Item ").getResultList();
     }
+
+
 }
