@@ -2,57 +2,58 @@ package ru.geekbrains.jsf;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.geekbrains.persist.item.Order;
-import ru.geekbrains.persist.item.OrderRepository;
 
-import javax.enterprise.context.SessionScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
-@SessionScoped// параметр для определения время жизни Bean`а
+@Stateless
 @Named
 public class OrdersBean implements Serializable {
 
     @Inject
-    private OrderRepository orderRepository;
+    private OrderService orderService;
+
+    @Inject
+    private GarbageService garbageService;
 
     private Logger logger = LoggerFactory.getLogger(OrdersBean.class);
 
-    private Order order;
+    private OrderRepr order;
 
-    public Order getOrder() {
+    public OrderRepr getOrder() {
         return order;
     }
 
-    public void setOrder(Order order) {
+    public void setOrder(OrderRepr order) {
         this.order = order;
     }
 
-    public List<Order> getAllOrders() {
-        return orderRepository.getAllOrders();
-    }
+    public List<OrderRepr> getAllOrders() {return orderService.getAllOrders();}
 
-    public String editOrder(Order order) {
+    public String editOrder(OrderRepr order) {
         this.order=order;
         return "/order.xhtml?faces-redirect=true";
     }
 
-    public void deleteOrder(Order order) {
-
-        orderRepository.delete(order);
-    }
+    public void deleteOrder(OrderRepr order) {
+        garbageService.merge(new GarbageRepr(order));
+        orderService.delete(order.getId());}
 
     public String createOrder() {
-
-        this.order=new Order();
+        this.order=new OrderRepr();
         return "/order.xhtml?faces-redirect=true";
     }
 
     public String saveOrder() {
-        orderRepository.merge(this.order);
+        orderService.merge(this.order);
         return "/orders.xhtml?faces-redirect=true";
     }
+//    public String saveOrder(int id) {
+//        orderService.merge(this.order);
+//        return "/orders.xhtml?faces-redirect=true";
+//    }
 
 }

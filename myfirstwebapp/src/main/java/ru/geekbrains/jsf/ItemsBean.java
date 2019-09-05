@@ -2,55 +2,56 @@ package ru.geekbrains.jsf;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.geekbrains.persist.item.Item;
-import ru.geekbrains.persist.item.ItemRepository;
 
-import javax.enterprise.context.SessionScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
-@SessionScoped// параметр для определения время жизни Bean`а
+@Stateless
 @Named
 public class ItemsBean implements Serializable {
-    @Inject
-    private ItemRepository itemRepository;
 
     private Logger logger = LoggerFactory.getLogger(ItemsBean.class);
 
-    private Item item;
+    @Inject
+    private ItemService itemService;
 
-    public Item getItem() {
+    @Inject
+    private GarbageService garbageService;
+
+    private ItemRepr item;
+
+    public ItemRepr getItem() {
         return item;
     }
 
-    public void setItem(Item item) {
+    public void setItem(ItemRepr item) {
         this.item = item;
     }
 
-    public List<Item> getAllItems() {
-        return itemRepository.getAllItems();
+    public List<ItemRepr> getAllItems() {
+        return itemService.getAllItems();
     }
 
-    public String editItem(Item item) {
+    public String editItem(ItemRepr item) {
         this.item=item;
         return "/item.xhtml?faces-redirect=true";
     }
 
-    public void deleteItem(Item item) {
-
-        itemRepository.delete(item);
+    public void deleteItem(ItemRepr item) {
+        garbageService.merge(new GarbageRepr(item));
+        itemService.delete(item.getId());
     }
 
     public String createItem() {
-
-        this.item=new Item();
+        this.item=new ItemRepr();
         return "/item.xhtml?faces-redirect=true";
     }
 
     public String saveItem() {
-        itemRepository.merge(this.item);
+        itemService.merge(this.item);
         return "/items.xhtml?faces-redirect=true";
     }
 }

@@ -1,7 +1,8 @@
-package ru.geekbrains.persist;
+package ru.geekbrains.persist.repository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.geekbrains.persist.item.Role;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;

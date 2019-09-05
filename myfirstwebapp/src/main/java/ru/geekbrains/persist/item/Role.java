@@ -1,6 +1,6 @@
-package ru.geekbrains.persist;
+package ru.geekbrains.persist.item;
 
-import ru.geekbrains.jsf.serviceLayer.RoleRepr;
+import ru.geekbrains.jsf.RoleRepr;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

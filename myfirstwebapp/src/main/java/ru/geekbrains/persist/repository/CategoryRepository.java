@@ -1,7 +1,8 @@
-package ru.geekbrains.persist.item;
+package ru.geekbrains.persist.repository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.geekbrains.persist.item.Category;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
@@ -12,24 +13,25 @@ import java.util.List;
 
 @ApplicationScoped
 @Named
-public class ItemRepository {
-    private Logger logger = LoggerFactory.getLogger(ItemRepository.class);
+public class CategoryRepository {
+    private Logger logger = LoggerFactory.getLogger(CategoryRepository.class);
 
     @PersistenceContext(unitName = "ds")
     protected EntityManager em;
 
-    public ItemRepository(){ }
-
-    @Transactional
-    public Item merge(Item item){
-        return em.merge(item);
+    public CategoryRepository(){
     }
 
     @Transactional
-    public void delete(Item item){
+    public Category merge(Category category){
+        return em.merge(category);
+    }
+
+    @Transactional
+    public void delete(Category category){
 
         try {
-            Item attached =findById(item.getId());
+            Category attached =findById(category.getId());
             if (attached!=null){
                 em.remove(attached);
             }
@@ -39,17 +41,15 @@ public class ItemRepository {
         }
     }
 
-    public Item findById(int id) {
-        return em.find(Item.class, id);
+    public Category findById(int id) {
+        return em.find(Category.class, id);
     }
 
     public boolean existsById(int id) {
         return findById(id) != null;
     }
 
-    public List<Item> getAllItems() {
-        return em.createQuery("from Item ").getResultList();
+    public List<Category> getAllCategories() {
+        return em.createQuery("from Category ").getResultList();
     }
-
-
 }

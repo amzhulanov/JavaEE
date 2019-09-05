@@ -1,39 +1,25 @@
-package ru.geekbrains.persist.item;
+package ru.geekbrains.jsf;
 
+import ru.geekbrains.persist.item.Order;
 
-import ru.geekbrains.jsf.OrderRepr;
+public class OrderRepr {
 
-import javax.persistence.*;
-
-@Entity
-@Table(name="orders")
-public class Order {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="num_order",unique = true,nullable = false)
     private String num_order;
 
-    @Column(name="buyer",unique = true,nullable = false)
     private String buyer;
 
-    public Order() {    }
-
-    public Order(Integer id, String num_order, String buyer) {
-        this.id = id;
-        this.num_order = num_order;
-        this.buyer = buyer;
+    public OrderRepr() {
     }
 
-    public Order(OrderRepr order) {
+    public OrderRepr(Order order) {
         this.id = order.getId();
         this.num_order = order.getNum_order();
         this.buyer = order.getBuyer();
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 

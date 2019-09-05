@@ -1,44 +1,29 @@
-package ru.geekbrains.persist.item;
+package ru.geekbrains.jsf;
 
-import ru.geekbrains.jsf.ItemRepr;
+import ru.geekbrains.persist.item.Item;
 
-import javax.persistence.*;
+public class ItemRepr {
 
-@Entity
-@Table(name="items")
-public class Item {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="name",unique = true,nullable = false)
     private String name;
 
-    @Column(name="category",unique = true,nullable = false)
     private String category;
 
-    @Column(name="vendor",unique = true,nullable = false)
     private String vendor;
 
-    public Item() {
-
+    public ItemRepr() {
     }
 
-    public Item(Integer id, String name, String vendor, String category) {
-        this.id = id;
-        this.name = name;
-        this.vendor = vendor;
-        this.category = category;
-    }
-
-    public Item(ItemRepr item) {
+    public ItemRepr(Item item) {
         this.id = item.getId();
         this.name = item.getName();
-        this.vendor = item.getVendor();
         this.category = item.getCategory();
+        this.vendor = item.getVendor();
     }
 
-    public Integer getId() {
+
+    public int getId() {
         return id;
     }
 

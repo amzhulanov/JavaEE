@@ -1,0 +1,32 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+</h:head>
+<p:tabMenu activeIndex="#{param.menu}">
+    <p:menuitem value="Товары" outcome="/ui/menu/tabMenu" icon="pi pi-star">
+        <f:param name="i" value="0" />
+    </p:menuitem>
+    <p:menuitem value="Категории" outcome="/ui/menu/tabMenu" icon="pi pi-search">
+        <f:param name="i" value="1" />
+    </p:menuitem>
+    <p:menuitem value="Заказы" outcome="/ui/menu/tabMenu" icon="pi pi-file">
+        <f:param name="i" value="2" />
+    </p:menuitem>
+    <p:menuitem value="Корзина" outcome="/ui/menu/tabMenu" icon="pi pi-briefcase">
+        <f:param name="i" value="3" />
+    </p:menuitem>
+    <p:menuitem value="Пользователи" outcome="/ui/menu/tabMenu" icon="pi pi-user">
+        <f:param name="i" value="4" />
+    </p:menuitem>
+</p:tabMenu>
+</html>

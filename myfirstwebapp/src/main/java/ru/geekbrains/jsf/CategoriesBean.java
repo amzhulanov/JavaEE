@@ -3,7 +3,7 @@ package ru.geekbrains.jsf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.geekbrains.persist.item.Category;
-import ru.geekbrains.persist.item.CategoryRepository;
+import ru.geekbrains.persist.repository.CategoryRepository;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;

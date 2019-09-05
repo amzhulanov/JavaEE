@@ -1,6 +1,6 @@
-package ru.geekbrains.jsf.serviceLayer;
+package ru.geekbrains.jsf;
 
-import ru.geekbrains.persist.RoleRepository;
+import ru.geekbrains.persist.repository.RoleRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
